@@ -17,23 +17,7 @@ import {
 } from '@dnd-kit/sortable';
 import ResizableBox from "./ResizableBox";
 
-const ContentType = {
-  INTRO: 'Intro',
-  DESC: 'Desc',
-  HISTORY: 'History',
-  ICONS: 'Icons'
-};
-
-// Initial content with default dimensions
-const initialContent = [
-  { id: 1, type: ContentType.INTRO, width: 200, height: 150 },
-  { id: 2, type: ContentType.DESC, width: 200, height: 150 },
-  { id: 3, type: ContentType.HISTORY, width: 200, height: 150 },
-  { id: 4, type: ContentType.ICONS, width: 200, height: 150 },
-];
-
-const Editor = () => {
-  const [content, setContent] = useState(initialContent);
+const Editor = ({content, setContent}) => {
   const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
