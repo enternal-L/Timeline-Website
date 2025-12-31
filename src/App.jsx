@@ -4,6 +4,7 @@ import Intro from './components/Intro'
 import Desc from './components/Desc'
 import Hist from './components/Hist'
 import Icons from './components/Icons'
+import ScrollProgressIndicator from './components/ScrollProgressIndicator'
 import './styles/App.css'
 
 function App() {
@@ -25,7 +26,6 @@ function App() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(initialContent)
-  const scrollContainerRef = useRef(null);
 
   // plain object that maps type to component
   const contentMap = {
@@ -35,17 +35,14 @@ function App() {
     [ContentType.ICONS]: Icons,
   }
 
+  // ref for measurements, have to attach to a DOM element
+  const ref = useRef(null);
+
   // MAKE that swithcing edits the underlying array!!
 
   if (isEditing) {
     return (
       <div>
-        <button 
-          onClick={() => setIsEditing(false)}
-          className="fixed top-4 right-4 z-50 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-        >
-          View Mode
-        </button>
         <Editor content = {content} setContent={setContent}/>
       </div>
     );
@@ -53,16 +50,9 @@ function App() {
 
   return (
     <div className="w-screen h-screen overflow-hidden">
-      <button 
-        onClick={() => setIsEditing(true)}
-        className="fixed top-4 right-4 z-50 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-      >
-        Edit Mode
-      </button>
-      
       <main 
-        ref={scrollContainerRef}
         className="w-full h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth custom-scrollbar"
+        ref = {ref}
       >
         {content.map(item => {
 
@@ -73,6 +63,11 @@ function App() {
             return <Component key={item.id}/>
         })}
       </main>
+      
+      <ScrollProgressIndicator
+        sectionRef = {ref}
+        sectionCount={content.length} 
+      />
     </div>
   )
 }

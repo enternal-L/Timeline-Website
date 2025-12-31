@@ -3,6 +3,12 @@
   text-align: center;
 }
 
+/* disable scrollbar */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

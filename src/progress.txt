@@ -1,0 +1,3 @@
+now since we want the length to be proportional to the height, how should we integrate with scroll snap
+hold on, how can I even make something having more length?
+
