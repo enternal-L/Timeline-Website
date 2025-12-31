@@ -4,6 +4,7 @@ import Intro from './components/Intro'
 import Desc from './components/Desc'
 import Hist from './components/Hist'
 import Icons from './components/Icons'
+import Switch from './components/SwitchButton'
 import ScrollProgressIndicator from './components/ScrollProgressIndicator'
 import './styles/App.css'
 
@@ -43,6 +44,7 @@ function App() {
   if (isEditing) {
     return (
       <div>
+        <Switch onClick={() => setIsEditing(false)} />
         <Editor content = {content} setContent={setContent}/>
       </div>
     );
@@ -68,6 +70,8 @@ function App() {
         sectionRef = {ref}
         sectionCount={content.length} 
       />
+ 
+      <Switch onClick={() => setIsEditing(true)}/>
     </div>
   )
 }

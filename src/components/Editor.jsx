@@ -16,6 +16,11 @@ import {
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import ResizableBox from "./ResizableBox";
+import TopPanel from "./editor/TopPanel";
+import MediaPanel from "./editor/MediaPanel";
+import ContentPanel from "./editor/ContentPanel";
+import ThemePanel from "./editor/ThemePanel";
+import TimelinePanel from "./editor/TimelinePanel";
 
 const Editor = ({content, setContent}) => {
   const [activeId, setActiveId] = useState(null);
@@ -57,56 +62,25 @@ const Editor = ({content, setContent}) => {
   const activeItem = content.find(item => item.id === activeId);
 
   return (
-    // ensure that dnd can be used here
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext
-        items={content.map(item => item.id)}
-        strategy={horizontalListSortingStrategy}
-      >
-        <div className="flex flex-row p-4 bg-gray-100 min-h-screen">
-          {content.map((item) => (
-            <ResizableBox
-              key={item.id}
-              id={item.id}
-              type={item.type}
-              width={item.width}
-              height={item.height}
-              onResize={handleResize}
-            >
-              <div className="text-sm text-gray-500 mt-2">
-                {item.width} × {item.height}px
-              </div>
-            </ResizableBox>
-          ))}
-        </div>
-      </SortableContext>
-      <DragOverlay>
-        {activeItem ? (
-          <div
-            className="border-2 border-gray-300 bg-white rounded-lg p-4 shadow-2xl scale-110 rotate-2 opacity-95"
-            style={{ 
-              width: `${activeItem.width}px`, 
-              height: `${activeItem.height}px`,
-              minWidth: '100px'
-            }}
-          >
-            <div className="h-full flex items-center justify-center">
-              <div className="text-center">
-                <div className="font-semibold text-gray-700">{activeItem.type}</div>
-                <div className="text-sm text-gray-500 mt-2">
-                  {activeItem.width} × {activeItem.height}px
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+    <div className="w-screen h-screen flex flex-col bg-gray-950">
+      {/* Top Panel - spans full width */}
+      <TopPanel />
+      
+      {/* Main editing area - three column layout */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel - Media */}
+        <MediaPanel />
+        
+        {/* Center Panel - Content Preview */}
+        <ContentPanel />
+        
+        {/* Right Panel - Themes */}
+        <ThemePanel />
+      </div>
+      
+      {/* Bottom Panel - Timeline */}
+      <TimelinePanel />
+    </div>
   );
 };
 
