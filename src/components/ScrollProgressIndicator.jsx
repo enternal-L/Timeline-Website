@@ -31,7 +31,7 @@ const ScrollProgressIndicator = ({ sectionRef, sectionCount }) => {
         <div className="fixed right-3 top-1/2 -translate-y-1/2 flex flex-col items-center z-40 pointer-events-none">
         {Array.from({ length: sectionCount }).map((_, index) => { 
             return (
-                <button className={`w-2 h-2 rounded-full my-2 p-0.5 ${
+                <button key = {index} className={`w-2 h-2 rounded-full my-2 p-0.5 ${
                     index === currentInd ? 'bg-white' :'bg-slate-500'}`}></button>
             );
         })}

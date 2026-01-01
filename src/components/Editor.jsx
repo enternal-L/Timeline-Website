@@ -22,7 +22,7 @@ import ContentPanel from "./editor/ContentPanel";
 import ThemePanel from "./editor/ThemePanel";
 import TimelinePanel from "./editor/TimelinePanel";
 
-const Editor = ({content, setContent}) => {
+const Editor = ({content, setContent, contentMap, onExitEdit}) => {
   const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
@@ -50,7 +50,7 @@ const Editor = ({content, setContent}) => {
     const { active, over } = event;
     setActiveId(null);
 
-    if (active.id !== over?.id) {
+    if (over && active.id !== over.id) {
       setContent((items) => {
         const oldIndex = items.findIndex(item => item.id === active.id);
         const newIndex = items.findIndex(item => item.id === over.id);
@@ -64,22 +64,29 @@ const Editor = ({content, setContent}) => {
   return (
     <div className="w-screen h-screen flex flex-col bg-gray-950">
       {/* Top Panel - spans full width */}
-      <TopPanel />
+      <TopPanel onExitEdit={onExitEdit} />
       
       {/* Main editing area - three column layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Media */}
-        <MediaPanel />
+        <MediaPanel content={content} handleResize={handleResize} />
         
         {/* Center Panel - Content Preview */}
-        <ContentPanel />
+        <ContentPanel content={content} contentMap={contentMap} />
         
         {/* Right Panel - Themes */}
         <ThemePanel />
       </div>
       
       {/* Bottom Panel - Timeline */}
-      <TimelinePanel />
+      <TimelinePanel 
+        content={content} 
+        handleResize={handleResize}
+        handleDragStart={handleDragStart}
+        handleDragEnd={handleDragEnd}
+        sensors={sensors}
+        activeId={activeId}
+      />
     </div>
   );
 };

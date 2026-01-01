@@ -1,6 +1,6 @@
 const Icons = () => {
   return (
-    <section className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100 snap-start flex-shrink-0">
+    <section className="h-screen w-full flex items-center justify-center bg-white snap-start flex-shrink-0">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-4xl font-bold text-gray-800 mb-6">Icons</h2>
         <p className="text-lg text-gray-600">

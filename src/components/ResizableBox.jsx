@@ -8,7 +8,8 @@ const ResizableBox = ({
   width, 
   height, 
   onResize, 
-  children 
+  children,
+  isTimeline = false
 }) => {
   const {
     attributes,
@@ -72,11 +73,16 @@ const ResizableBox = ({
     };
   }, [isResizing, resizeSide, id, height, onResize]);
 
+  // Timeline styling for Premiere Pro look
+  const timelineClasses = isTimeline 
+    ? 'relative border border-[#005a9e] rounded-sm select-none transition-all duration-200 bg-[#0078d4] m-0'
+    : 'relative border-2 rounded-lg p-4 m-2 select-none transition-all duration-200 border-gray-300 bg-white shadow-sm hover:shadow-md';
+
   return (
     <div
       ref={setNodeRef}
-      style={{ ...style, width: `${width}px`, height: `${height}px`, minWidth: '100px' }}
-      className={'relative border-2 rounded-lg p-4 m-2 select-none transition-all duration-200 border-gray-300 bg-white shadow-sm hover:shadow-md'}
+      style={{ ...style, width: `${width}px`, height: isTimeline ? `${height}px` : `${height}px`, minWidth: isTimeline ? '60px' : '100px' }}
+      className={timelineClasses}
       {...attributes}
     >
 
@@ -85,7 +91,7 @@ const ResizableBox = ({
             className="absolute top-0 left-0 w-2 h-full cursor-col-resize z-10 group"
             onMouseDown={(e) => handleMouseDown(e, 'left')}
         >
-            <div className="absolute top-0 left-0 w-0.5 h-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className={`absolute top-0 left-0 w-0.5 h-full ${isTimeline ? 'bg-white/60' : 'bg-blue-500'} opacity-0 group-hover:opacity-100 transition-opacity`} />
         </div>
 
         {/* right side */}
@@ -93,8 +99,26 @@ const ResizableBox = ({
             className="absolute top-0 right-0 w-2 h-full cursor-col-resize z-10 group"
             onMouseDown={(e) => handleMouseDown(e, 'right')}
         >
-            <div className="absolute top-0 right-0 w-0.5 h-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className={`absolute top-0 right-0 w-0.5 h-full ${isTimeline ? 'bg-white/60' : 'bg-blue-500'} opacity-0 group-hover:opacity-100 transition-opacity`} />
         </div>
+        
+        {/* Timeline-specific elements */}
+        {isTimeline && (
+          <>
+            {/* Top and bottom white lines */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-white/30"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/30"></div>
+            
+            {/* Corner markers */}
+            <div className="absolute top-0 left-0 w-0 h-0 border-t-[6px] border-l-[6px] border-t-white/40 border-l-transparent"></div>
+            <div className="absolute top-0 right-0 w-0 h-0 border-t-[6px] border-r-[6px] border-t-white/40 border-r-transparent"></div>
+            
+            {/* FX indicator */}
+            <div className="absolute top-1 right-1 text-white text-[10px] font-semibold">
+              fx
+            </div>
+          </>
+        )}
         
         {/* Drag handle - center area for dragging */}
         <div 
@@ -102,7 +126,7 @@ const ResizableBox = ({
           {...listeners}
         >
             <div className="text-center">
-            <div className="font-semibold text-gray-700">{type}</div>
+            <div className={`font-semibold ${isTimeline ? 'text-white text-xs' : 'text-gray-700'}`}>{type}</div>
             {children}
             </div>
         </div>

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { DndContext } from '@dnd-kit/core';
 import Editor from './components/Editor'
 import Intro from './components/Intro'
 import Desc from './components/Desc'
@@ -19,10 +20,10 @@ function App() {
 
   // initial content
   const initialContent = [
-    { id: 1, type: ContentType.INTRO, width: 200, height: 150 },
-    { id: 2, type: ContentType.DESC, width: 200, height: 150 },
-    { id: 3, type: ContentType.HISTORY, width: 200, height: 150 },
-    { id: 4, type: ContentType.ICONS, width: 200, height: 150 },
+    { id: 1, type: ContentType.INTRO, width: 100, height: 150 },
+    { id: 2, type: ContentType.DESC, width: 100, height: 150 },
+    { id: 3, type: ContentType.HISTORY, width: 100, height: 150 },
+    { id: 4, type: ContentType.ICONS, width: 100, height: 150 },
   ];
 
   const [isEditing, setIsEditing] = useState(false);
@@ -43,10 +44,9 @@ function App() {
 
   if (isEditing) {
     return (
-      <div>
-        <Switch onClick={() => setIsEditing(false)} />
-        <Editor content = {content} setContent={setContent}/>
-      </div>
+      <DndContext>
+        <Editor content = {content} setContent={setContent} contentMap = {contentMap} onExitEdit={() => setIsEditing(false)} />
+      </DndContext>
     );
   }
 

@@ -1,17 +1,22 @@
-const ContentPanel = () => {
+const ContentPanel = ({ content, contentMap }) => {
   return (
     <div className="flex-1 bg-gray-100 overflow-auto">
-      {/* Main content panel - preview of website */}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold mb-4">Content Preview</h3>
-        <div className="bg-white rounded-lg shadow p-8 min-h-[500px]">
-          {/* Placeholder for content preview */}
-          <div className="text-gray-500">Website preview will appear here</div>
+        <div className = "w-full h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth custom-scrollbar">
+        {content.map(item => {
+            // get component from object
+            const Component = contentMap[item.type];
+
+            // render component 
+            return <Component key={item.id}/>
+          })}
+
+          {/* <ScrollProgressIndicator
+            sectionRef = {ref}
+            sectionCount={content.length} 
+          /> */}
         </div>
-      </div>
     </div>
   );
 };
 
 export default ContentPanel;
-
